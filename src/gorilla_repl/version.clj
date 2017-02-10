@@ -1,6 +1,6 @@
 (ns gorilla-repl.version
   "Checks whether a newer version of Gorilla REPL is availble."
-  (:require [org.httpkit.client :as http]
+  (:require [aleph.http :as http]
             [clj-semver.core :as semver]))
 
 (def update-url "http://updates.gorilla-repl.org/latest-version?v=")

@@ -22,7 +22,8 @@ var repl = (function () {
     self.connect = function (successCallback, failureCallback) {
         // hard to believe we have to do this
         var loc = window.location,
-            url = "ws://" + loc.hostname + ":" + loc.port + loc.pathname.replace(/[^/]+$/,'repl');
+            protocol = (window.location.protocol == "http:") ? "ws://" : "wss://",
+            url = protocol + loc.hostname + ":" + loc.port + loc.pathname.replace(/[^/]+$/,'repl');
 
         self.ws = new WebSocket(url);
 
