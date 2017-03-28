@@ -20,11 +20,11 @@
   ;; The REPL traffic is handled in the websocket-transport ns.
 
 (defroutes app-routes
-  (GET "/load" [] (handle/wrap-api-handler handle/load-worksheet))
+  (GET  "/load" [] (handle/wrap-api-handler handle/load-worksheet))
   (POST "/save" [] (handle/wrap-api-handler handle/save))
-  (GET "/gorilla-files" [] (handle/wrap-api-handler handle/gorilla-files))
-  (GET "/config" [] (handle/wrap-api-handler handle/config))
-  (GET "/repl" []   #'ws-relay/ring-handler)
+  (GET  "/gorilla-files" [] (handle/wrap-api-handler handle/gorilla-files))
+  (GET  "/config" [] (handle/wrap-api-handler handle/config))
+  (GET  "/repl" []   #'ws-relay/ring-handler)
   (route/resources "/" {:root "gorilla-repl-client"})
   (route/files "/project-files" {:root "."}))
 
@@ -45,10 +45,12 @@
     ;; build config information for client
     (handle/set-config :project project)
     (handle/set-config :keymap keymap)
+    
     ;; check for updates
-    ;;(version/check-for-update version)  ;; runs asynchronously
+    ;; (version/check-for-update version)  ;; runs asynchronously
     ;; first startup nREPL
     (nrepl/start-and-connect nrepl-requested-port nrepl-port-file)
+    
     ;; and then the webserver
     (let [s (http/start-server #'app-routes {:port webapp-requested-port :join? false :ip ip :max-body 500000000})
           webapp-port (:local-port (meta s))]
